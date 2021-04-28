@@ -1,3 +1,1 @@
 Example use of the cloud block with mock data generation block as input. The data generator outputs the current timestamp every 30 seconds.
-
-Uses kb2ma/cloud:genericx86-64-ext image for cloudBlock. `pubsub.yaml` file elided because it contains secrets. See [dapr example](https://docs.dapr.io/reference/components-reference/supported-bindings/gcppubsub/) for contents, which also correspond to cloudBlock [documentation](https://github.com/balena-io-playground/cloudBlock/blob/main/doc/GcpPubsubOutputVars.md).
