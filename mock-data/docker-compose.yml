@@ -3,13 +3,35 @@ volumes:
     cloudblockdata:
 services:
     cloud:
-        build: cloud
+        # Assumes component vars defined in (application) environment variables
+        # unless you use one of the alternatives below. For details see
+        # https://github.com/balena-io-playground/cloudBlock README.
+        image: kb2ma/cloud-dev
+        # Uncomment to directly write provided component configuration files
+        # for development. See cloud directory, which otherwise is not used
+        #build: cloud
         privileged: true
         tty: true
         #restart: always
         network_mode: host
         volumes:
             - 'cloudblockdata:/data'
+        environment:
+            # keep it on for development
+            DAPR_DEBUG: 1
+            # Uncomment to define component vars here instead of balena cloud.
+            # Example below is for Google Pubsub.
+            #GCP_PUBSUB_TOPIC: my_topic
+            #GCP_PUBSUB_TYPE: service_account
+            #GCP_PUBSUB_PROJECT_ID: my-project-id
+            #GCP_PUBSUB_PRIVATE_KEY_ID: 0000000000000000000000000000000000000000
+            #GCP_PUBSUB_CLIENT_EMAIL: me@xyz.iam.gserviceaccount.com
+            #GCP_PUBSUB_CLIENT_ID: 000000000000000000000
+            #GCP_PUBSUB_AUTH_URI: https://accounts.google.com/o/oauth2/auth
+            #GCP_PUBSUB_TOKEN_URI: https://oauth2.googleapis.com/token
+            #GCP_PUBSUB_AUTH_PROVIDER_X509_CERT_URL: https://www.googleapis.com/oauth2/v1/certs
+            #GCP_PUBSUB_CLIENT_X509_CERT_URL: https://www.googleapis.com/robot/v1/metadata/x509/me@iam.gserviceaccount.com
+            #GCP_PUBSUB_PRIVATE_KEY: -----BEGIN PRIVATE KEY-----\n000\n-----END PRIVATE KEY-----\n
         depends_on: 
             - "mqtt"
     mqtt:

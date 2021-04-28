@@ -1,4 +1,4 @@
-FROM kb2ma/cloud:genericx86-64-ext
+FROM kb2ma/cloud-dev:%%BALENA_MACHINE_NAME%%
 
 # Pubsub binding parameters for GCP Pubsub
 COPY pubsub.yaml /app/components/
