@@ -1,1 +1,3 @@
 Example use of the cloud block with the [balenablocks/sensor](https://github.com/balenablocks/sensor) block as input, including a `docker-compose.yml` file for configuration. See the sensor block documentation for supported sensors. We have used a BME280 temp/humidity/pressure sensor with it. You should not need custom code to use the sensor block.
+
+There are three ways to configure the cloud component, via environment variables, a docker-compose *environment* section, or a hard-coded YAML file. See the comments in `docker-compose.yml` for details.
