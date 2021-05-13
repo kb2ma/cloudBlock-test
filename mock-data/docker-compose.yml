@@ -6,6 +6,9 @@ services:
         # Assumes component vars defined in (application) environment variables
         # unless you use one of the alternatives below. For details see
         # https://github.com/balena-io-playground/cloudBlock README.
+        # Local build required only for MS Azure secret store, to copy in
+        # certificate file. Otherwise OK to use image.
+        #build: cloud
         image: kb2ma/cloud-dev
         # Uncomment to directly write provided component configuration files
         # for development. See cloud directory, which otherwise is not used
