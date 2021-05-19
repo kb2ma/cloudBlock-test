@@ -10,7 +10,6 @@ services:
         #
         # Local build required only for MS Azure secret store, to copy in
         # certificate file. Otherwise OK to use image.
-        #build: cloud
         image: kb2ma/cloud-dev
         # Uncomment to directly write provided component configuration files
         # for development. See cloud directory, which otherwise is not used
@@ -42,7 +41,7 @@ services:
         depends_on: 
             - "mqtt"
     mqtt:
-        image: eclipse-mosquitto:1.6.9
+        image: eclipse-mosquitto:1.6.14
         ports:
             - "1883:1883"
         restart: always
