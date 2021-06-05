@@ -8,7 +8,10 @@ import time
 
 def get_cpu_temp():
     """
-    Obtains the current value of the CPU temperature.
+    Obtains the current value of the CPU temperature. Reads the temperature in
+    the file /sys/class/thermal/thermal*/temp, where thermal* is some device
+    specific name like 'thermal_zone0'. Favors a dir that ends with '0'; otherwise
+    just uses the first directory found with a valid name.
     :returns: Current value of the CPU temperature if successful, zero value otherwise.
     :rtype: float
     """
@@ -16,14 +19,31 @@ def get_cpu_temp():
     result = 0.0
     # The first line in this file holds the CPU temperature as an integer times 1000.
     # Read the first line and remove the newline character at the end of the string.
-    if os.path.isfile('/sys/class/thermal/thermal_zone0/temp'):
-        with open('/sys/class/thermal/thermal_zone0/temp') as f:
-            line = f.readline().strip()
-        # Test if the string is an integer as expected.
-        if line.isdigit():
-            # Convert the string with the CPU temperature to a float in degrees Celsius.
-            result = float(line) / 1000
-    # Give the result back to the caller.
+    topDir = '/sys/class/thermal'
+    if not os.path.isdir(topDir):
+        print("{} directory not found".format(topDir))
+        return result
+
+    with os.scandir(topDir) as it:
+        for d in it:
+            if d.is_dir() and d.name.startswith('thermal'):
+                try:
+                    with open(topDir + '/' + d.name + '/temp') as f:
+                        #print("Found file: {}".format(f.name))
+                        line = f.readline().strip()
+                        if line.isdigit():
+                            # Convert the string with the CPU temperature to a float
+                            # in degrees Celsius.
+                            temp = float(line) / 1000
+
+                            if (d.name.endswith('0') or result == 0.0) and temp > 0.0:
+                                #print("Using temp in dir: {}".format(d.name))
+                                result = temp
+                except:
+                    # We don't care if the temperature file does not exist
+                    # or any other error; we're just looking for any reasonable
+                    # temperature value.
+                    pass
     return result
 
 
